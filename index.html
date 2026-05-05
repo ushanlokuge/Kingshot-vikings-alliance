@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kingshot Viking Generator</title>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: none;
+    }
+
+    button {
+      background: #22c55e;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+
+    .group {
+      background: #1e293b;
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    .player {
+      margin-top: 10px;
+      padding: 10px;
+      background: #334155;
+      border-radius: 8px;
+    }
+
+    .hero {
+      margin-left: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>⚔️ Kingshot Viking Generator</h1>
+
+  <input type="file" id="csvFile" accept=".csv" />
+  <br>
+  <button onclick="processCSV()">Generate Vikings</button>
+
+  <div id="output"></div>
+</div>
+
+<script>
+const heroes = [
+  "Margot (Low)",
+  "Yeonwoo",
+  "Jabel",
+  "Chenko",
+  "Amane",
+  "Margot (Low)"
+];
+
+function processCSV() {
+  const file = document.getElementById("csvFile").files[0];
+  if (!file) {
+    alert("Upload a CSV file first!");
+    return;
+  }
+
+  Papa.parse(file, {
+    header: true,
+    skipEmptyLines: true,
+    complete: function(results) {
+      const data = results.data;
+      generateGroups(data);
+    }
+  });
+}
+
+function generateGroups(data) {
+  const groups = {};
+
+  // Group players
+  data.forEach(row => {
+    const group = row.Group;
+    const name = row.Player;
+    const marches = parseInt(row.Marches);
+
+    if (!groups[group]) {
+      groups[group] = [];
+    }
+
+    groups[group].push({
+      name,
+      marches
+    });
+  });
+
+  const outputDiv = document.getElementById("output");
+  outputDiv.innerHTML = "";
+
+  Object.keys(groups).forEach(groupId => {
+    const players = groups[groupId];
+
+    const groupDiv = document.createElement("div");
+    groupDiv.className = "group";
+
+    groupDiv.innerHTML = `<h2>Group ${groupId}</h2>`;
+
+    players.forEach((player, i) => {
+      const playerDiv = document.createElement("div");
+      playerDiv.className = "player";
+
+      let html = `<strong>${player.name} (${player.marches} marches)</strong><br>`;
+
+      for (let j = 0; j < player.marches; j++) {
+        const targetIndex = (i + j + 1) % players.length;
+        const target = players[targetIndex];
+
+        html += `<div class="hero">➡️ ${heroes[j]} → ${target.name}</div>`;
+      }
+
+      playerDiv.innerHTML = html;
+      groupDiv.appendChild(playerDiv);
+    });
+
+    outputDiv.appendChild(groupDiv);
+  });
+}
+</script>
+
+</body>
+</html>
