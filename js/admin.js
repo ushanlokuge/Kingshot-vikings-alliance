@@ -45,7 +45,7 @@ async function loadPlayerTable() {
     try {
 
         const players = await getPlayers();
-
+        console.log(players);
         tbody.innerHTML = "";
 
         if (players.length === 0) {
