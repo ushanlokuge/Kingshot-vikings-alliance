@@ -2,14 +2,20 @@ import { renderPlayers } from "./pages/players.js";
 import { renderHeroes } from "./pages/heroes.js";
 import { renderGroups } from "./pages/groups.js";
 import { renderGenerate } from "./pages/generate.js";
+
 import {
-    getPlayers,
-    addPlayer,
-    deletePlayer,
-    editPlayer
+    getPlayers
 } from "./services/playerService.js";
 
+// ----------------------------
+// Main Content
+// ----------------------------
+
 const content = document.getElementById("content");
+
+// ----------------------------
+// Available Pages
+// ----------------------------
 
 const pages = {
     players: renderPlayers,
@@ -17,81 +23,102 @@ const pages = {
     groups: renderGroups,
     generate: renderGenerate
 };
-async function loadPlayerTable() {
 
-    const players = await getPlayers();
+// ----------------------------
+// Load Player Table
+// ----------------------------
+
+async function loadPlayerTable() {
 
     const tbody = document.getElementById("playerTable");
 
-    tbody.innerHTML = "";
+    if (!tbody) return;
 
-    if (players.length === 0) {
+    tbody.innerHTML = `
+        <tr>
+            <td colspan="4" class="text-center">
+                Loading...
+            </td>
+        </tr>
+    `;
+
+    try {
+
+        const players = await getPlayers();
+
+        tbody.innerHTML = "";
+
+        if (players.length === 0) {
+
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="4" class="text-center">
+                        No Players Found
+                    </td>
+                </tr>
+            `;
+
+            return;
+
+        }
+
+        players.forEach(player => {
+
+            tbody.innerHTML += `
+                <tr>
+
+                    <td>${player.name}</td>
+
+                    <td>${player.group}</td>
+
+                    <td>${player.marches}</td>
+
+                    <td>
+
+                        <button
+                            class="btn btn-warning btn-sm editPlayer"
+                            data-id="${player.id}">
+
+                            ✏ Edit
+
+                        </button>
+
+                        <button
+                            class="btn btn-danger btn-sm deletePlayer"
+                            data-id="${player.id}">
+
+                            🗑 Delete
+
+                        </button>
+
+                    </td>
+
+                </tr>
+            `;
+
+        });
+
+    } catch (error) {
+
+        console.error(error);
 
         tbody.innerHTML = `
             <tr>
-                <td colspan="4" class="text-center">
-                    No players found.
+                <td colspan="4" class="text-danger text-center">
+                    Failed to load players.
                 </td>
             </tr>
         `;
 
-        return;
-    }
-
-    players.forEach(player => {
-
-        tbody.innerHTML += `
-            <tr>
-
-                <td>${player.name}</td>
-
-                <td>${player.group}</td>
-
-                <td>${player.marches}</td>
-
-                <td>
-
-                    <button
-                        class="btn btn-warning btn-sm editPlayer"
-                        data-id="${player.id}">
-
-                        Edit
-
-                    </button>
-
-                    <button
-                        class="btn btn-danger btn-sm deletePlayer"
-                        data-id="${player.id}">
-
-                        Delete
-
-                    </button>
-
-                </td>
-
-            </tr>
-        `;
-
-    });
-
-}
-
-async function loadPage(page) {
-
-    content.innerHTML = pages[page]();
-
-    if (page === "players") {
-
-        await loadPlayerTable();
-
-       document
-        .getElementById("addPlayerBtn")
-        .addEventListener("click", showPlayerModal);
-
     }
 
 }
-function showPlayerModal(){
+
+// ----------------------------
+// Player Modal
+// ----------------------------
+
+function showPlayerModal() {
 
     const modal = new bootstrap.Modal(
         document.getElementById("playerModal")
@@ -100,19 +127,70 @@ function showPlayerModal(){
     modal.show();
 
 }
-loadPage("players");
 
-document.querySelectorAll(".list-group-item").forEach(btn=>{
+// ----------------------------
+// Load Selected Page
+// ----------------------------
 
-    btn.addEventListener("click",()=>{
+async function loadPage(page) {
+
+    content.innerHTML = pages[page]();
+
+    switch (page) {
+
+        case "players":
+
+            await loadPlayerTable();
+
+            document
+                .getElementById("addPlayerBtn")
+                .addEventListener("click", showPlayerModal);
+
+            break;
+
+        case "heroes":
+
+            console.log("Heroes");
+
+            break;
+
+        case "groups":
+
+            console.log("Groups");
+
+            break;
+
+        case "generate":
+
+            console.log("Generate");
+
+            break;
+
+    }
+
+}
+
+// ----------------------------
+// Sidebar Navigation
+// ----------------------------
+
+document.querySelectorAll(".list-group-item").forEach(button => {
+
+    button.addEventListener("click", () => {
 
         document.querySelectorAll(".list-group-item")
-            .forEach(b=>b.classList.remove("active"));
+            .forEach(btn => btn.classList.remove("active"));
 
-        btn.classList.add("active");
+        button.classList.add("active");
 
-        loadPage(btn.dataset.page);
+        loadPage(button.dataset.page);
 
     });
 
 });
+
+// ----------------------------
+// Start App
+// ----------------------------
+
+loadPage("players");
