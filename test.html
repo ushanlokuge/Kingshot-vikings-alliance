@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firestore Test</title>
+</head>
+<body>
+
+<h1>Heroes</h1>
+
+<ul id="heroes"></ul>
+
+<script type="module">
+
+import { db } from "./js/firebase.js";
+
+import {
+collection,
+getDocs
+
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const querySnapshot = await getDocs(collection(db,"heroes"));
+
+querySnapshot.forEach(doc=>{
+
+const hero=doc.data();
+
+document.getElementById("heroes").innerHTML+=`<li>${hero.order} - ${hero.name}</li>`;
+
+});
+
+</script>
+
+</body>
+</html>
