@@ -3,6 +3,7 @@ import { renderHeroes } from "./pages/heroes.js";
 import { renderGroups } from "./pages/groups.js";
 import { renderGenerate } from "./pages/generate.js";
 import { loadPlayers, addPlayer } from "./playersCrud.js";
+import { getPlayers } from "./services/playerService.js";
 
 const content = document.getElementById("content");
 
