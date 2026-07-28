@@ -13,14 +13,23 @@ import {
 
 const playersRef = collection(db, "players");
 
+//export async function getPlayers() {
+
+//    const q = query(
+//        playersRef,
+//        orderBy("group"),
+//        orderBy("name")
+ //   );
 export async function getPlayers() {
 
-    const q = query(
-        playersRef,
-        orderBy("group"),
-        orderBy("name")
-    );
+    const snapshot = await getDocs(playersRef);
 
+    return snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    }));
+
+}
     const snapshot = await getDocs(q);
 
     return snapshot.docs.map(doc => ({
