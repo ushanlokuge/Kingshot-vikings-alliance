@@ -13,22 +13,99 @@ const pages = {
     groups: renderGroups,
     generate: renderGenerate
 };
+async function loadPlayerTable() {
+
+    const players = await getPlayers();
+
+    const tbody = document.getElementById("playerTable");
+
+    tbody.innerHTML = "";
+
+    if (players.length === 0) {
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="4" class="text-center">
+                    No players found.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    players.forEach(player => {
+
+        tbody.innerHTML += `
+            <tr>
+
+                <td>${player.name}</td>
+
+                <td>${player.group}</td>
+
+                <td>${player.marches}</td>
+
+                <td>
+
+                    <button
+                        class="btn btn-warning btn-sm editPlayer"
+                        data-id="${player.id}">
+
+                        Edit
+
+                    </button>
+
+                    <button
+                        class="btn btn-danger btn-sm deletePlayer"
+                        data-id="${player.id}">
+
+                        Delete
+
+                    </button>
+
+                </td>
+
+            </tr>
+        `;
+
+    });
+
+}
 
 async function loadPage(page) {
 
     content.innerHTML = pages[page]();
 
-    if(page === "players"){
+    if (page === "players") {
 
-        await loadPlayers();
+        await loadPlayerTable();
 
         document
             .getElementById("addPlayerBtn")
-            .onclick = openPlayerDialog;
+            .addEventListener("click", () => {
+
+                alert("Add Player clicked!");
+
+            });
 
     }
 
 }
+//async function loadPage(page) {
+
+//    content.innerHTML = pages[page]();
+
+//    if(page === "players"){
+
+ //       await loadPlayers();
+
+ //       document
+ //           .getElementById("addPlayerBtn")
+ //           .onclick = openPlayerDialog;
+
+ //   }
+
+//}
 async function openPlayerDialog(){
 
     const name = prompt("Player name");
