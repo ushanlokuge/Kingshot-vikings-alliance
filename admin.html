@@ -62,7 +62,66 @@
     </div>
 
 </div>
+<!-- Add Player Modal -->
+<div class="modal fade" id="playerModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark text-light">
 
+      <div class="modal-header">
+        <h5 class="modal-title">Add Player</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="mb-3">
+          <label class="form-label">Player Name</label>
+          <input type="text" class="form-control" id="playerName">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Group</label>
+
+          <select class="form-select" id="playerGroup">
+            <option>Group 1</option>
+            <option>Group 2</option>
+            <option>Group 3</option>
+          </select>
+
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Marches</label>
+
+          <select class="form-select" id="playerMarches">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option selected>5</option>
+            <option>6</option>
+            <option>7</option>
+          </select>
+
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+
+        <button class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+
+        <button class="btn btn-success" id="savePlayerBtn">
+          Save Player
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+    
 <script type="module" src="js/admin.js"></script>
 
 </body>
