@@ -2,8 +2,12 @@ import { renderPlayers } from "./pages/players.js";
 import { renderHeroes } from "./pages/heroes.js";
 import { renderGroups } from "./pages/groups.js";
 import { renderGenerate } from "./pages/generate.js";
-import { loadPlayers, addPlayer } from "./playersCrud.js";
-import { getPlayers } from "./services/playerService.js";
+import {
+    getPlayers,
+    addPlayer,
+    deletePlayer,
+    editPlayer
+} from "./services/playerService.js";
 
 const content = document.getElementById("content");
 
@@ -80,49 +84,20 @@ async function loadPage(page) {
 
         await loadPlayerTable();
 
-        document
-            .getElementById("addPlayerBtn")
-            .addEventListener("click", () => {
-
-                alert("Add Player clicked!");
-
-            });
+       document
+        .getElementById("addPlayerBtn")
+        .addEventListener("click", showPlayerModal);
 
     }
 
 }
-//async function loadPage(page) {
+function showPlayerModal(){
 
-//    content.innerHTML = pages[page]();
+    const modal = new bootstrap.Modal(
+        document.getElementById("playerModal")
+    );
 
-//    if(page === "players"){
-
- //       await loadPlayers();
-
- //       document
- //           .getElementById("addPlayerBtn")
- //           .onclick = openPlayerDialog;
-
- //   }
-
-//}
-async function openPlayerDialog(){
-
-    const name = prompt("Player name");
-
-    if(!name) return;
-
-    const group = prompt("Group");
-
-    if(!group) return;
-
-    const marches = parseInt(prompt("Marches"));
-
-    if(isNaN(marches)) return;
-
-    await addPlayer(name, group, marches);
-
-    loadPlayers();
+    modal.show();
 
 }
 loadPage("players");
