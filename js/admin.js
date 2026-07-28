@@ -1,20 +1,36 @@
-import { db } from "./firebase.js";
+import { renderPlayers } from "./pages/players.js";
+import { renderHeroes } from "./pages/heroes.js";
+import { renderGroups } from "./pages/groups.js";
+import { renderGenerate } from "./pages/generate.js";
 
-import {
-    collection,
-    getDocs
-} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+const content = document.getElementById("content");
 
-async function loadHeroes() {
+const pages = {
+    players: renderPlayers,
+    heroes: renderHeroes,
+    groups: renderGroups,
+    generate: renderGenerate
+};
 
-    const snapshot = await getDocs(collection(db,"heroes"));
+function loadPage(page){
 
-    snapshot.forEach(doc=>{
-
-        console.log(doc.data());
-
-    });
+    content.innerHTML = pages[page]();
 
 }
 
-loadHeroes();
+loadPage("players");
+
+document.querySelectorAll(".list-group-item").forEach(btn=>{
+
+    btn.addEventListener("click",()=>{
+
+        document.querySelectorAll(".list-group-item")
+            .forEach(b=>b.classList.remove("active"));
+
+        btn.classList.add("active");
+
+        loadPage(btn.dataset.page);
+
+    });
+
+});
