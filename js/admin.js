@@ -13,12 +13,40 @@ const pages = {
     generate: renderGenerate
 };
 
-function loadPage(page){
+async function loadPage(page) {
 
     content.innerHTML = pages[page]();
 
-}
+    if(page === "players"){
 
+        await loadPlayers();
+
+        document
+            .getElementById("addPlayerBtn")
+            .onclick = openPlayerDialog;
+
+    }
+
+}
+async function openPlayerDialog(){
+
+    const name = prompt("Player name");
+
+    if(!name) return;
+
+    const group = prompt("Group");
+
+    if(!group) return;
+
+    const marches = parseInt(prompt("Marches"));
+
+    if(isNaN(marches)) return;
+
+    await addPlayer(name, group, marches);
+
+    loadPlayers();
+
+}
 loadPage("players");
 
 document.querySelectorAll(".list-group-item").forEach(btn=>{
