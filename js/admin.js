@@ -4,7 +4,8 @@ import { renderGroups } from "./pages/groups.js";
 import { renderGenerate } from "./pages/generate.js";
 
 import {
-    getPlayers
+    getPlayers,
+    addPlayer
 } from "./services/playerService.js";
 
 // ----------------------------
@@ -118,15 +119,55 @@ async function loadPlayerTable() {
 // Player Modal
 // ----------------------------
 
+let playerModal;
+
 function showPlayerModal() {
 
-    const modal = new bootstrap.Modal(
-        document.getElementById("playerModal")
-    );
+    document.getElementById("playerName").value = "";
+    document.getElementById("playerGroup").selectedIndex = 0;
+    document.getElementById("playerMarches").value = 5;
 
-    modal.show();
+    if (!playerModal) {
+        playerModal = new bootstrap.Modal(
+            document.getElementById("playerModal")
+        );
+    }
+
+    playerModal.show();
 
 }
+// ----------------------------
+// Save Player
+// ----------------------------
+async function savePlayer() {
+
+    const name = document.getElementById("playerName").value.trim();
+    const group = document.getElementById("playerGroup").value;
+    const marches = parseInt(
+        document.getElementById("playerMarches").value
+    );
+
+    if (!name) {
+
+        alert("Please enter a player name.");
+        return;
+
+    }
+
+    await addPlayer({
+        name,
+        group,
+        marches
+    });
+
+    playerModal.hide();
+
+    await loadPlayerTable();
+
+}
+
+
+
 
 // ----------------------------
 // Load Selected Page
@@ -145,7 +186,10 @@ async function loadPage(page) {
             document
                 .getElementById("addPlayerBtn")
                 .addEventListener("click", showPlayerModal);
-
+            
+            document
+                .getElementById("savePlayerBtn")
+                .onclick = savePlayer;
             break;
 
         case "heroes":
