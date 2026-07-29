@@ -12,24 +12,22 @@ import {
 const playersRef = collection(db, "players");
 
 export async function getPlayers() {
-
     const snapshot = await getDocs(playersRef);
 
-    return snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
+    return snapshot.docs.map(document => ({
+        id: document.id,
+        ...document.data()
     }));
-
 }
 
 export async function addPlayer(player) {
-    return await addDoc(playersRef, player);
+    return addDoc(playersRef, player);
 }
 
 export async function deletePlayer(id) {
-    return await deleteDoc(doc(db, "players", id));
+    return deleteDoc(doc(db, "players", id));
 }
 
 export async function editPlayer(id, player) {
-    return await updateDoc(doc(db, "players", id), player);
+    return updateDoc(doc(db, "players", id), player);
 }
