@@ -139,6 +139,11 @@ async function loadHeroTable() {
                     }
                 });
             });
+        new Sortable(document.getElementById("heroTableBody"), {
+         animation: 150,
+        ghostClass: "table-active"
+
+     });
     } catch (error) {
 
         console.error(error);
