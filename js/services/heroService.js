@@ -6,14 +6,18 @@ import {
     addDoc,
     updateDoc,
     deleteDoc,
-    doc
+    doc,
+    query,
+    orderBy
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const heroesRef = collection(db, "heroes");
 
 export async function getHeroes() {
 
-    const snapshot = await getDocs(heroesRef);
+     const q = query(heroesRef, orderBy("order"));
+
+    const snapshot = await getDocs(q);
 
     return snapshot.docs.map(document => ({
         id: document.id,
