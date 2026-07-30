@@ -248,7 +248,7 @@ function showHeroModal() {
 // Save Hero
 // ----------------------------
 async function saveHero() {
-
+    console.log("Save Hero clicked");
     const id = document.getElementById("heroId").value;
 
     const hero = {
