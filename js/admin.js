@@ -285,13 +285,13 @@ function showGroupModal(group = null) {
 
         document.getElementById("groupId").value = group.id;
         document.getElementById("groupName").value = group.name;
-        document.getElementById("groupOrder").value = group.order;
+        
 
     } else {
 
         document.getElementById("groupId").value = "";
         document.getElementById("groupName").value = "";
-        document.getElementById("groupOrder").value = "";
+        
 
     }
 
@@ -309,7 +309,7 @@ async function saveGroup() {
 
         name: document.getElementById("groupName").value.trim(),
 
-        order: parseInt(document.getElementById("groupOrder").value)
+        
 
     };
 
