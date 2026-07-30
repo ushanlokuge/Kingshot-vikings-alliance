@@ -31,84 +31,24 @@ const pages = {
 
 async function loadPlayerTable() {
 
-    const tbody = document.getElementById("playerTable");
-
-    if (!tbody) return;
-
-    tbody.innerHTML = `
-        <tr>
-            <td colspan="4" class="text-center">
-                Loading...
-            </td>
-        </tr>
-    `;
-
     try {
 
         const players = await getPlayers();
-        console.log(players);
-        tbody.innerHTML = "";
 
-        if (players.length === 0) {
+        content.innerHTML = renderPlayers(players);
 
-            tbody.innerHTML = `
-                <tr>
-                    <td colspan="4" class="text-center">
-                        No Players Found
-                    </td>
-                </tr>
-            `;
-
-            return;
-
-        }
-
-        players.forEach(player => {
-
-            tbody.innerHTML += `
-                <tr>
-
-                    <td>${player.name}</td>
-
-                    <td>${player.group}</td>
-
-                    <td>${player.marches}</td>
-
-                    <td>
-
-                        <button
-                            class="btn btn-warning btn-sm editPlayer"
-                            data-id="${player.id}">
-
-                            ✏ Edit
-
-                        </button>
-
-                        <button
-                            class="btn btn-danger btn-sm deletePlayer"
-                            data-id="${player.id}">
-
-                            🗑 Delete
-
-                        </button>
-
-                    </td>
-
-                </tr>
-            `;
-
-        });
+        document
+            .getElementById("addPlayerBtn")
+            .addEventListener("click", showPlayerModal);
 
     } catch (error) {
 
         console.error(error);
 
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="4" class="text-danger text-center">
-                    Failed to load players.
-                </td>
-            </tr>
+        content.innerHTML = `
+            <div class="alert alert-danger">
+                Failed to load players.
+            </div>
         `;
 
     }
@@ -179,18 +119,15 @@ async function loadPage(page) {
 
     switch (page) {
 
-        case "players":
+       case "players":
 
-            await loadPlayerTable();
+    await loadPlayerTable();
 
-            document
-                .getElementById("addPlayerBtn")
-                .addEventListener("click", showPlayerModal);
-            
-            document
-                .getElementById("savePlayerBtn")
-                .onclick = savePlayer;
-            break;
+    document
+        .getElementById("savePlayerBtn")
+        .onclick = savePlayer;
+
+    break;
 
         case "heroes":
 
