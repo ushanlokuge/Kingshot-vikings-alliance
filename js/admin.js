@@ -84,8 +84,10 @@ async function loadGroupTable() {
 
             document.querySelectorAll(".editGroup").forEach(button => {
                 button.addEventListener("click", async () => {
+                    console.log("Edit clicked:", button.dataset.id);
                     const groups = await getGroups();
                     const group = groups.find(g => g.id === button.dataset.id);
+                    console.log(group);
                     showGroupModal(group);
                 });
             });
