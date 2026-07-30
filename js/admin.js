@@ -119,6 +119,26 @@ async function loadHeroTable() {
                 showHeroModal(hero);
                 });
             });
+        document
+            .querySelectorAll(".deleteHero").forEach(button => {
+                button.addEventListener("click", async () => {
+                const heroName = button.closest("tr")
+                    .children[1]
+                    .textContent;
+                const confirmed = confirm(
+                    `Delete hero "${heroName}"?`
+                );
+                if (!confirmed)
+                    return;
+                try {
+                    await deleteHero(button.dataset.id);
+                    await loadHeroTable();
+                } catch (error) {
+                    console.error(error);
+                    alert("Failed to delete hero.");
+                    }
+                });
+            });
     } catch (error) {
 
         console.error(error);
