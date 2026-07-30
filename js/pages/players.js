@@ -1,4 +1,53 @@
-export function renderPlayers() {
+import { createTable } from "../ui/table.js";
+
+export function renderPlayers(players = []) {
+
+    const tableHtml = createTable({
+
+        columns: [
+            "Name",
+            "Group",
+            "Account",
+            "Marches",
+            "Actions"
+        ],
+
+        data: players,
+
+        emptyMessage: "No players found.",
+
+        renderRow: player => `
+            <tr>
+
+                <td>${player.name}</td>
+
+                <td>${player.group ?? "-"}</td>
+
+                <td>${player.accountType ?? "Main"}</td>
+
+                <td>${player.marches}</td>
+
+                <td>
+
+                    <button
+                        class="btn btn-warning btn-sm editPlayer"
+                        data-id="${player.id}">
+                        ✏ Edit
+                    </button>
+
+                    <button
+                        class="btn btn-danger btn-sm deletePlayer"
+                        data-id="${player.id}">
+                        🗑 Delete
+                    </button>
+
+                </td>
+
+            </tr>
+        `
+
+    });
+
     return `
         <div class="card bg-dark border-secondary">
 
@@ -14,33 +63,11 @@ export function renderPlayers() {
 
             <div class="card-body">
 
-                <table class="table table-dark table-hover align-middle">
-
-                    <thead>
-
-                        <tr>
-                            <th>Name</th>
-                            <th>Group</th>
-                            <th>Marches</th>
-                            <th width="180">Actions</th>
-                        </tr>
-
-                    </thead>
-
-                    <tbody id="playerTable">
-
-                        <tr>
-                            <td colspan="4" class="text-center">
-                                Loading players...
-                            </td>
-                        </tr>
-
-                    </tbody>
-
-                </table>
+                ${tableHtml}
 
             </div>
 
         </div>
     `;
+
 }
