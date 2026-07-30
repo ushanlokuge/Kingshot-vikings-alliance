@@ -3,7 +3,7 @@ import { createTable } from "../ui/table.js";
 export function renderHeroes(heroes = []) {
 
     const table = createTable({
-
+        tbodyId: "heroTableBody",
         columns: [
             "Order",
             "Hero Name",
