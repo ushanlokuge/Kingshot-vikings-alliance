@@ -6,16 +6,17 @@ import {
     addDoc,
     updateDoc,
     deleteDoc,
-    doc
+    doc,
+    query,
+    orderBy
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
 
 const groupsRef = collection(db, "groups");
 
-export async function getGroups() {
-
-    const snapshot = await getDocs(groupsRef);
-
-    return snapshot.docs.map(document => ({
+        export async function getGroups() {
+         const q = query(groupsRef, orderBy("order"));
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map(document => ({
         id: document.id,
         ...document.data()
     }));
