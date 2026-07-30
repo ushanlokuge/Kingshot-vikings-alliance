@@ -125,7 +125,7 @@ async function loadGroupTable() {
         await loadGroupTable();
     }
 });
-    });
+
 } catch (error) {
 
         console.error(error);
