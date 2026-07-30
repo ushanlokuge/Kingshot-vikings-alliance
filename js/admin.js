@@ -139,22 +139,22 @@ async function loadHeroTable() {
                     }
                 });
             });
-        new Sortable(document.getElementById("heroTableBody"), {
-             animation: 150,
-            ghostClass: "table-active"
+       const heroTableBody = document.getElementById("heroTableBody");
+
+        new Sortable(heroTableBody, {
+            animation: 150,
+            ghostClass: "table-active",
             onEnd: async () => {
-            const rows = heroTableBody.querySelectorAll("tr");
-            for (let i = 0; i < rows.length; i++) {
-            const heroId = rows[i]
-                .querySelector(".editHero")
-                .dataset.id;
-            await updateHero(heroId, {
+                const rows = heroTableBody.querySelectorAll("tr");
+                for (let i = 0; i < rows.length; i++) {
+                rows[i].children[0].textContent = i + 1;
+                await updateHero(rows[i].dataset.id, {
                 order: i + 1
                 });
             }
-        await loadHeroTable();
-       }
-     });
+            await loadHeroTable();
+        }
+    });
     } catch (error) {
 
         console.error(error);
