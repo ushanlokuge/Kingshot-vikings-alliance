@@ -4,7 +4,8 @@ export function createTable(options) {
         columns = [],
         data = [],
         emptyMessage = "No records found.",
-        renderRow
+        renderRow,
+        tbodyId = ""
     } = options;
 
     let html = `
@@ -20,7 +21,7 @@ export function createTable(options) {
     html += `
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="${tbodyId}">
     `;
 
     if (data.length === 0) {
