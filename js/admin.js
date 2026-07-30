@@ -112,6 +112,13 @@ async function loadHeroTable() {
             .getElementById("addHeroBtn")
             .addEventListener("click", showHeroModal);
 
+            document.querySelectorAll(".editHero").forEach(button => {
+                button.addEventListener("click", async () => {
+                    const heroes = await getHeroes();
+                    const hero = heroes.find(h => h.id === button.dataset.id);
+                showHeroModal(hero);
+                });
+            });
     } catch (error) {
 
         console.error(error);
