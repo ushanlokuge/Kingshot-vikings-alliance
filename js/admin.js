@@ -74,29 +74,57 @@ async function loadGroupTable() {
 
     try {
 
-        const groups = await getGroups();
+        const Groupes = await getGroupes();
 
-        content.innerHTML = renderGroups(groups);
+        content.innerHTML = renderGroupes(Groupes);
 
         document
             .getElementById("addGroupBtn")
             .addEventListener("click", showGroupModal);
 
-    } catch (error) {
+            document.querySelectorAll(".editGroup").forEach(button => {
+                button.addEventListener("click", async () => {
+                    const Groupes = await getGroupes();
+                    const Group = Groupes.find(h => h.id === button.dataset.id);
+                showGroupModal(Group);
+                });
+            });
+        document
+            .querySelectorAll(".deleteGroup").forEach(button => {
+                button.addEventListener("click", async () => {
+                const GroupName = button.closest("tr")
+                    .children[1]
+                    .textContent;
+                const confirmed = confirm(
+                    `Delete Group "${GroupName}"?`
+                );
+                if (!confirmed)
+                    return;
+                try {
+                    await deleteGroup(button.dataset.id);
+                    await loadGroupTable();
+                } catch (error) {
+                    console.error(error);
+                    alert("Failed to delete Group.");
+                    }
+                });
+            });
+       const GroupTableBody = document.getElementById("GroupTableBody");
 
-        console.error(error);
-
-        content.innerHTML = `
-            <div class="alert alert-danger">
-
-                Failed to load groups.
-
-            </div>
-        `;
-
-    }
-
-}
+        new Sortable(GroupTableBody, {
+            animation: 150,
+            ghostClass: "table-active",
+            onEnd: async () => {
+                const rows = GroupTableBody.querySelectorAll("tr");
+                for (let i = 0; i < rows.length; i++) {
+                rows[i].children[0].textContent = i + 1;
+                await updateGroup(rows[i].dataset.id, {
+                order: i + 1
+                });
+            }
+            await loadGroupTable();
+        }
+    });
 // ----------------------------
 // Load Hero Table
 // ----------------------------
