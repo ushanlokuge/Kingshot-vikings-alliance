@@ -16,7 +16,7 @@ export function renderHeroes(heroes = []) {
 
         renderRow: hero => `
 
-            <tr>
+            <tr data-id="${hero.id}">
 
                 <td>${hero.order}</td>
 
