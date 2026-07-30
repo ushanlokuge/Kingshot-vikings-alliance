@@ -10,7 +10,9 @@ import {
 
 import {
     getGroups,
-    addGroup
+    addGroup,
+    updateGroup,
+    deleteGroup
 } from "./services/groupService.js";
 
 // ----------------------------
@@ -141,8 +143,50 @@ async function savePlayer() {
 
 }
 
+// ----------------------------
+// Group Modal
+// ----------------------------
+let groupModal;
 
+function showGroupModal() {
 
+    document.getElementById("groupId").value = "";
+    document.getElementById("groupName").value = "";
+
+    if (!groupModal) {
+        groupModal = new bootstrap.Modal(
+            document.getElementById("groupModal")
+        );
+    }
+
+    groupModal.show();
+
+}
+// ----------------------------
+// Save Group
+// ----------------------------
+async function saveGroup() {
+
+    const name = document
+        .getElementById("groupName")
+        .value
+        .trim();
+
+    if (!name) {
+
+        alert("Please enter a group name.");
+
+        return;
+
+    }
+
+    await addGroup({ name });
+
+    groupModal.hide();
+
+    await loadGroupTable();
+
+}
 
 // ----------------------------
 // Load Selected Page
@@ -155,25 +199,21 @@ async function loadPage(page) {
     switch (page) {
 
        case "players":
-
-    await loadPlayerTable();
-
-    document
-        .getElementById("savePlayerBtn")
-        .onclick = savePlayer;
-
-    break;
+            await loadPlayerTable();
+            document
+                .getElementById("savePlayerBtn")
+                .onclick = savePlayer;
+            break;
 
         case "heroes":
-
             console.log("Heroes");
-
             break;
 
         case "groups":
-
             await loadGroupTable();
-
+            document
+                .getElementById("saveGroupBtn")
+                .onclick = saveGroup;
             break;
 
         case "generate":
