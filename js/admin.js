@@ -322,11 +322,17 @@ async function saveGroup() {
 
     if (id === "") {
 
+        const groups = await getGroups();
+
+        group.order = groups.length + 1;
+
         await addGroup(group);
 
     } else {
 
-        await updateGroup(id, group);
+        await updateGroup(id, {
+            name: group.name
+        });
 
     }
 
