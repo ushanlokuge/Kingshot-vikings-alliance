@@ -8,6 +8,11 @@ import {
     addPlayer
 } from "./services/playerService.js";
 
+import {
+    getGroups,
+    addGroup
+} from "./services/groupService.js";
+
 // ----------------------------
 // Main Content
 // ----------------------------
@@ -55,6 +60,36 @@ async function loadPlayerTable() {
 
 }
 
+// ----------------------------
+// Load Group Table
+// ----------------------------
+async function loadGroupTable() {
+
+    try {
+
+        const groups = await getGroups();
+
+        content.innerHTML = renderGroups(groups);
+
+        document
+            .getElementById("addGroupBtn")
+            .addEventListener("click", showGroupModal);
+
+    } catch (error) {
+
+        console.error(error);
+
+        content.innerHTML = `
+            <div class="alert alert-danger">
+
+                Failed to load groups.
+
+            </div>
+        `;
+
+    }
+
+}
 // ----------------------------
 // Player Modal
 // ----------------------------
@@ -137,7 +172,7 @@ async function loadPage(page) {
 
         case "groups":
 
-            console.log("Groups");
+            await loadGroupTable();
 
             break;
 
