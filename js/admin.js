@@ -233,24 +233,28 @@ async function saveGroup() {
 // ----------------------------
 let heroModal;
 
-function showHeroModal() {
-
-    document.getElementById("heroId").value = "";
-    document.getElementById("heroName").value = "";
-    document.getElementById("heroOrder").value = "";
+function showHeroModal(hero = null) {
 
     if (!heroModal) {
-
         heroModal = new bootstrap.Modal(
             document.getElementById("heroModal")
         );
+    }
 
+    if (hero) {
+        // Edit mode
+        document.getElementById("heroId").value = hero.id;
+        document.getElementById("heroName").value = hero.name;
+        document.getElementById("heroOrder").value = hero.order;
+    } else {
+        // Add mode
+        document.getElementById("heroId").value = "";
+        document.getElementById("heroName").value = "";
+        document.getElementById("heroOrder").value = "";
     }
 
     heroModal.show();
-
 }
-
 // ----------------------------
 // Save Hero
 // ----------------------------
