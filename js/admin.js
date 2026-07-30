@@ -74,9 +74,9 @@ async function loadGroupTable() {
 
     try {
 
-        const Groupes = await getGroupes();
+        const groups = await getGroups();
 
-        content.innerHTML = renderGroupes(Groupes);
+        content.innerHTML = renderGroups(groups);
 
         document
             .getElementById("addGroupBtn")
@@ -84,9 +84,9 @@ async function loadGroupTable() {
 
             document.querySelectorAll(".editGroup").forEach(button => {
                 button.addEventListener("click", async () => {
-                    const Groupes = await getGroupes();
-                    const Group = Groupes.find(h => h.id === button.dataset.id);
-                showGroupModal(Group);
+                    const groups = await getGroups();
+                    const group = groups.find(g => g.id === button.dataset.id);
+                    showGroupModal(group);
                 });
             });
         document
@@ -109,7 +109,7 @@ async function loadGroupTable() {
                     }
                 });
             });
-       const GroupTableBody = document.getElementById("GroupTableBody");
+       const groupTableBody = document.getElementById("groupTableBody");
 
         new Sortable(GroupTableBody, {
             animation: 150,
@@ -285,34 +285,34 @@ function showGroupModal(group = null) {
 // ----------------------------
 async function saveGroup() {
     console.log("Save Group clicked");
-    const id = document.getElementById("GroupId").value;
+    const id = document.getElementById("groupId").value;
 
-    const Group = {
+    const group = {
 
-        name: document.getElementById("GroupName").value.trim(),
+        name: document.getElementById("groupName").value.trim(),
 
-        order: parseInt(document.getElementById("GroupOrder").value)
+        order: parseInt(document.getElementById("groupOrder").value)
 
     };
 
-    if (!Group.name) {
+    if (!group.name) {
 
-        alert("Please enter a Group name.");
+        alert("Please enter a group name.");
         return;
 
     }
 
     if (id === "") {
 
-        await addGroup(Group);
+        await addGroup(group);
 
     } else {
 
-        await updateGroup(id, Group);
+        await updateGroup(id, group);
 
     }
 
-    GroupModal.hide();
+    groupModal.hide();
 
     await loadGroupTable();
 
