@@ -253,15 +253,28 @@ async function savePlayer() {
 // ----------------------------
 let groupModal;
 
-function showGroupModal() {
-
-    document.getElementById("groupId").value = "";
-    document.getElementById("groupName").value = "";
+function showGroupModal(group = null) {
 
     if (!groupModal) {
+
         groupModal = new bootstrap.Modal(
             document.getElementById("groupModal")
         );
+
+    }
+
+    if (group) {
+
+        document.getElementById("groupId").value = group.id;
+        document.getElementById("groupName").value = group.name;
+        document.getElementById("groupOrder").value = group.order;
+
+    } else {
+
+        document.getElementById("groupId").value = "";
+        document.getElementById("groupName").value = "";
+        document.getElementById("groupOrder").value = "";
+
     }
 
     groupModal.show();
@@ -271,27 +284,39 @@ function showGroupModal() {
 // Save Group
 // ----------------------------
 async function saveGroup() {
+    console.log("Save Group clicked");
+    const id = document.getElementById("GroupId").value;
 
-    const name = document
-        .getElementById("groupName")
-        .value
-        .trim();
+    const Group = {
 
-    if (!name) {
+        name: document.getElementById("GroupName").value.trim(),
 
-        alert("Please enter a group name.");
+        order: parseInt(document.getElementById("GroupOrder").value)
 
+    };
+
+    if (!Group.name) {
+
+        alert("Please enter a Group name.");
         return;
 
     }
 
-    await addGroup({ name });
+    if (id === "") {
 
-    groupModal.hide();
+        await addGroup(Group);
+
+    } else {
+
+        await updateGroup(id, Group);
+
+    }
+
+    GroupModal.hide();
 
     await loadGroupTable();
 
-}
+}        
 // ----------------------------
 // Hero Modal
 // ----------------------------
