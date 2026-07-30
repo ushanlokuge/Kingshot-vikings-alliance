@@ -140,9 +140,20 @@ async function loadHeroTable() {
                 });
             });
         new Sortable(document.getElementById("heroTableBody"), {
-         animation: 150,
-        ghostClass: "table-active"
-
+             animation: 150,
+            ghostClass: "table-active"
+            onEnd: async () => {
+            const rows = heroTableBody.querySelectorAll("tr");
+            for (let i = 0; i < rows.length; i++) {
+            const heroId = rows[i]
+                .querySelector(".editHero")
+                .dataset.id;
+            await updateHero(heroId, {
+                order: i + 1
+                });
+            }
+        await loadHeroTable();
+       }
      });
     } catch (error) {
 
