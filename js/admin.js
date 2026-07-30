@@ -14,7 +14,12 @@ import {
     updateGroup,
     deleteGroup
 } from "./services/groupService.js";
-
+import {
+    getHeroes,
+    addHero,
+    updateHero,
+    deleteHero
+} from "./services/heroService.js";
 // ----------------------------
 // Main Content
 // ----------------------------
@@ -92,6 +97,35 @@ async function loadGroupTable() {
     }
 
 }
+// ----------------------------
+// Load Hero Table
+// ----------------------------
+async function loadHeroTable() {
+
+    try {
+
+        const heroes = await getHeroes();
+
+        content.innerHTML = renderHeroes(heroes);
+
+        document
+            .getElementById("addHeroBtn")
+            .addEventListener("click", showHeroModal);
+
+    } catch (error) {
+
+        console.error(error);
+
+        content.innerHTML = `
+            <div class="alert alert-danger">
+                Failed to load heroes.
+            </div>
+        `;
+
+    }
+
+}
+
 // ----------------------------
 // Player Modal
 // ----------------------------
@@ -187,6 +221,66 @@ async function saveGroup() {
     await loadGroupTable();
 
 }
+// ----------------------------
+// Group Modal
+// ----------------------------
+let heroModal;
+
+function showHeroModal() {
+
+    document.getElementById("heroId").value = "";
+    document.getElementById("heroName").value = "";
+    document.getElementById("heroOrder").value = "";
+
+    if (!heroModal) {
+
+        heroModal = new bootstrap.Modal(
+            document.getElementById("heroModal")
+        );
+
+    }
+
+    heroModal.show();
+
+}
+
+// ----------------------------
+// Save Hero
+// ----------------------------
+async function saveHero() {
+
+    const id = document.getElementById("heroId").value;
+
+    const hero = {
+
+        name: document.getElementById("heroName").value.trim(),
+
+        order: parseInt(document.getElementById("heroOrder").value)
+
+    };
+
+    if (!hero.name) {
+
+        alert("Please enter a hero name.");
+        return;
+
+    }
+
+    if (id === "") {
+
+        await addHero(hero);
+
+    } else {
+
+        await updateHero(id, hero);
+
+    }
+
+    heroModal.hide();
+
+    await loadHeroTable();
+
+}
 
 // ----------------------------
 // Load Selected Page
@@ -206,7 +300,11 @@ async function loadPage(page) {
             break;
 
         case "heroes":
-            console.log("Heroes");
+             await loadHeroTable();
+
+            document
+                .getElementById("saveHeroBtn")
+                .onclick = saveHero;
             break;
 
         case "groups":
