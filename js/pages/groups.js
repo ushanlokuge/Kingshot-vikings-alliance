@@ -3,8 +3,9 @@ import { createTable } from "../ui/table.js";
 export function renderGroups(groups = []) {
 
     const table = createTable({
-
+        tbodyId: "groupTableBody",
         columns: [
+            "Order",
             "Group Name",
             "Actions"
         ],
@@ -15,8 +16,8 @@ export function renderGroups(groups = []) {
 
         renderRow: group => `
 
-            <tr>
-
+            <tr data-id="${group.id}">
+              <td>${group.order}</td>
                 <td>${group.name}</td>
 
                 <td>
