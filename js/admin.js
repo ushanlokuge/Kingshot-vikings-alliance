@@ -222,7 +222,7 @@ async function saveGroup() {
 
 }
 // ----------------------------
-// Group Modal
+// Hero Modal
 // ----------------------------
 let heroModal;
 
