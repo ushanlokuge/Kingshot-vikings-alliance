@@ -111,11 +111,11 @@ async function loadGroupTable() {
             });
        const groupTableBody = document.getElementById("groupTableBody");
 
-        new Sortable(GroupTableBody, {
+        new Sortable(groupTableBody, {
             animation: 150,
             ghostClass: "table-active",
             onEnd: async () => {
-                const rows = GroupTableBody.querySelectorAll("tr");
+                const rows = groupTableBody.querySelectorAll("tr");
                 for (let i = 0; i < rows.length; i++) {
                 rows[i].children[0].textContent = i + 1;
                 await updateGroup(rows[i].dataset.id, {
@@ -125,6 +125,17 @@ async function loadGroupTable() {
             await loadGroupTable();
         }
     });
+} catch (error) {
+
+        console.error(error);
+
+        content.innerHTML = `
+            <div class="alert alert-danger">
+                Failed to load Groups.
+            </div>
+        `;
+
+    }
 // ----------------------------
 // Load Hero Table
 // ----------------------------
