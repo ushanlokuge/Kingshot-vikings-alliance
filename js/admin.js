@@ -112,18 +112,19 @@ async function loadGroupTable() {
        const groupTableBody = document.getElementById("groupTableBody");
 
         new Sortable(groupTableBody, {
-            animation: 150,
-            ghostClass: "table-active",
-            onEnd: async () => {
-                const rows = groupTableBody.querySelectorAll("tr");
-                for (let i = 0; i < rows.length; i++) {
-                rows[i].children[0].textContent = i + 1;
-                await updateGroup(rows[i].dataset.id, {
+    animation: 150,
+    ghostClass: "table-active",
+    onEnd: async () => {
+        const rows = groupTableBody.querySelectorAll("tr");
+        for (let i = 0; i < rows.length; i++) {
+            rows[i].children[0].textContent = i + 1;
+            await updateGroup(rows[i].dataset.id, {
                 order: i + 1
-                });
-            }
-            await loadGroupTable();
+            });
         }
+        await loadGroupTable();
+    }
+});
     });
 } catch (error) {
 
@@ -136,6 +137,7 @@ async function loadGroupTable() {
         `;
 
     }
+}
 // ----------------------------
 // Load Hero Table
 // ----------------------------
@@ -180,20 +182,23 @@ async function loadHeroTable() {
             });
        const heroTableBody = document.getElementById("heroTableBody");
 
-        new Sortable(heroTableBody, {
-            animation: 150,
-            ghostClass: "table-active",
-            onEnd: async () => {
-                const rows = heroTableBody.querySelectorAll("tr");
-                for (let i = 0; i < rows.length; i++) {
-                rows[i].children[0].textContent = i + 1;
-                await updateHero(rows[i].dataset.id, {
+new Sortable(heroTableBody, {
+    animation: 150,
+    ghostClass: "table-active",
+    onEnd: async () => {
+        const rows = heroTableBody.querySelectorAll("tr");
+
+        for (let i = 0; i < rows.length; i++) {
+            rows[i].children[0].textContent = i + 1;
+
+            await updateHero(rows[i].dataset.id, {
                 order: i + 1
-                });
-            }
-            await loadHeroTable();
+            });
         }
-    });
+
+        await loadHeroTable();
+    }
+});
     } catch (error) {
 
         console.error(error);
