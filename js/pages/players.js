@@ -21,7 +21,7 @@ export function renderPlayers(players = []) {
 
                 <td>${player.name}</td>
 
-                <td>${player.group ?? "-"}</td>
+                <td>${player.groupName ?? "-"}</td>
 
                 <td>${player.accountType ?? "Main"}</td>
 
