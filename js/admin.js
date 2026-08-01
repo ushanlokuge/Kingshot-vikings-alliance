@@ -365,7 +365,8 @@ else {
 
 }
 
-playerModal.hide();
+    playerModal.hide();
+    await loadPlayerTable();
 }
 
 // ----------------------------
