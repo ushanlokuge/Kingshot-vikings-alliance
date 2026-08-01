@@ -332,9 +332,8 @@ async function showPlayerModal(player = null) {
 // Save Player
 // ----------------------------
 async function savePlayer() {
-    const id =
-    document.getElementById("playerId").value;
-console.log("Player ID:", `"${id}"`);
+    const id = document.getElementById("playerId").value || "";
+    console.log("Player ID:", `"${id}"`);
 const player = {
 
     name: document.getElementById("playerName").value.trim(),
@@ -355,7 +354,7 @@ const player = {
 
 };
 
-if (id === "") {
+if (!id || id === "undefined") {
 
     await addPlayer(player);
 
