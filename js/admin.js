@@ -48,8 +48,18 @@ async function loadPlayerTable() {
     try {
 
         const players = await getPlayers();
+        const groups = await getGroups();
+
+        players.forEach(player => {
+
+            const group = groups.find(g => g.id === player.groupId);
+
+            player.groupName = group ? group.name : "-";
+
+            });
 
         content.innerHTML = renderPlayers(players);
+    
 
         document
             .getElementById("addPlayerBtn")
@@ -254,7 +264,32 @@ new Sortable(heroTableBody, {
 
 let playerModal;
 
-function showPlayerModal(player = null) {
+async function loadPlayerGroups(selectedGroup = "") {
+
+    const groups = await getGroups();
+
+    const groupSelect = document.getElementById("playerGroup");
+
+    groupSelect.innerHTML = "";
+
+    groups.forEach(group => {
+
+        groupSelect.innerHTML += `
+            <option value="${group.id}">
+                ${group.name}
+            </option>
+        `;
+
+    });
+
+    if (selectedGroup) {
+         select.value = selectedGroupId;
+        //groupSelect.value = selectedGroup;
+
+    }
+
+}
+async function showPlayerModal(player = null) {
 
     if (!playerModal) {
 
@@ -269,7 +304,8 @@ function showPlayerModal(player = null) {
         // Edit
         document.getElementById("playerId").value = player.id;
         document.getElementById("playerName").value = player.name;
-        document.getElementById("playerGroup").value = player.group;
+        //document.getElementById("playerGroup").value = player.group;
+        await loadPlayerGroups(player.groupId);
         document.getElementById("playerAccountType").value = player.accountType ?? "Main";
         document.getElementById("playerMarches").value = player.marches;
         document.getElementById("playerNotes").value = player.notes ?? "";
@@ -280,7 +316,8 @@ function showPlayerModal(player = null) {
         // Add
         document.getElementById("playerId").value = "";
         document.getElementById("playerName").value = "";
-        document.getElementById("playerGroup").selectedIndex = 0;
+        //document.getElementById("playerGroup").selectedIndex = 0;
+        await loadPlayerGroups();
         document.getElementById("playerAccountType").value = "Main";
         document.getElementById("playerMarches").value = 5;
         document.getElementById("playerNotes").value = "";
@@ -302,7 +339,7 @@ const player = {
 
     name: document.getElementById("playerName").value.trim(),
 
-    group: document.getElementById("playerGroup").value,
+    groupId: document.getElementById("playerGroup").value,
 
     accountType:
         document.getElementById("playerAccountType").value,
@@ -331,32 +368,6 @@ else {
 
 playerModal.hide();
 
-await loadPlayerTable();
-    /*
-    const name = document.getElementById("playerName").value.trim();
-    const group = document.getElementById("playerGroup").value;
-    const marches = parseInt(
-        document.getElementById("playerMarches").value
-    );
-
-    if (!name) {
-
-        alert("Please enter a player name.");
-        return;
-
-    }
-
-    await addPlayer({
-        name,
-        group,
-        marches
-    });
-
-    playerModal.hide();
-
-    await loadPlayerTable();
-*/
-}
 
 // ----------------------------
 // Group Modal
