@@ -575,3 +575,4 @@ document.querySelectorAll(".list-group-item").forEach(button => {
 // ----------------------------
 
 loadPage("players");
+}
