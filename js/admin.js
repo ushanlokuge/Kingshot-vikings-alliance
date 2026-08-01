@@ -283,9 +283,7 @@ async function loadPlayerGroups(selectedGroup = "") {
     });
 
     if (selectedGroup) {
-         select.value = selectedGroupId;
-        //groupSelect.value = selectedGroup;
-
+        groupSelect.value = selectedGroup;
     }
 
 }
