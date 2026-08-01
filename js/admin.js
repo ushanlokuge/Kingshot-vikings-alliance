@@ -334,7 +334,7 @@ async function showPlayerModal(player = null) {
 async function savePlayer() {
     const id =
     document.getElementById("playerId").value;
-
+console.log("Player ID:", `"${id}"`);
 const player = {
 
     name: document.getElementById("playerName").value.trim(),
