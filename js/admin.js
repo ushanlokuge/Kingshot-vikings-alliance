@@ -255,57 +255,41 @@ new Sortable(heroTableBody, {
 let playerModal;
 
 function showPlayerModal(player = null) {
-   if (player) {
-
-    document.getElementById("playerId").value = player.id;
-
-    document.getElementById("playerName").value = player.name;
-
-    document.getElementById("playerGroup").value =
-        player.group;
-
-    document.getElementById("playerAccountType").value =
-        player.accountType ?? "Main";
-
-    document.getElementById("playerMarches").value =
-        player.marches;
-
-    document.getElementById("playerNotes").value =
-        player.notes ?? "";
-
-    document.getElementById("playerActive").checked =
-        player.active ?? true;
-
-}
-else {
-
-    document.getElementById("playerId").value = "";
-
-    document.getElementById("playerName").value = "";
-
-    document.getElementById("playerGroup").selectedIndex = 0;
-
-    document.getElementById("playerAccountType").value = "Main";
-
-    document.getElementById("playerMarches").value = 5;
-
-    document.getElementById("playerNotes").value = "";
-
-    document.getElementById("playerActive").checked = true;
-
-}
-    /*document.getElementById("playerName").value = "";
-    document.getElementById("playerGroup").selectedIndex = 0;
-    document.getElementById("playerMarches").value = 5;
 
     if (!playerModal) {
+
         playerModal = new bootstrap.Modal(
             document.getElementById("playerModal")
         );
+
+    }
+
+    if (player) {
+
+        // Edit
+        document.getElementById("playerId").value = player.id;
+        document.getElementById("playerName").value = player.name;
+        document.getElementById("playerGroup").value = player.group;
+        document.getElementById("playerAccountType").value = player.accountType ?? "Main";
+        document.getElementById("playerMarches").value = player.marches;
+        document.getElementById("playerNotes").value = player.notes ?? "";
+        document.getElementById("playerActive").checked = player.active ?? true;
+
+    } else {
+
+        // Add
+        document.getElementById("playerId").value = "";
+        document.getElementById("playerName").value = "";
+        document.getElementById("playerGroup").selectedIndex = 0;
+        document.getElementById("playerAccountType").value = "Main";
+        document.getElementById("playerMarches").value = 5;
+        document.getElementById("playerNotes").value = "";
+        document.getElementById("playerActive").checked = true;
+
     }
 
     playerModal.show();
-*/
+
 }
 // ----------------------------
 // Save Player
