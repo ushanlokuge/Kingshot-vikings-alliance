@@ -311,7 +311,44 @@ else {
 // Save Player
 // ----------------------------
 async function savePlayer() {
+    const id =
+    document.getElementById("playerId").value;
 
+const player = {
+
+    name: document.getElementById("playerName").value.trim(),
+
+    group: document.getElementById("playerGroup").value,
+
+    accountType:
+        document.getElementById("playerAccountType").value,
+
+    marches:
+        parseInt(document.getElementById("playerMarches").value),
+
+    notes:
+        document.getElementById("playerNotes").value,
+
+    active:
+        document.getElementById("playerActive").checked
+
+};
+
+if (id === "") {
+
+    await addPlayer(player);
+
+}
+else {
+
+    await editPlayer(id, player);
+
+}
+
+playerModal.hide();
+
+await loadPlayerTable();
+    /*
     const name = document.getElementById("playerName").value.trim();
     const group = document.getElementById("playerGroup").value;
     const marches = parseInt(
@@ -334,7 +371,7 @@ async function savePlayer() {
     playerModal.hide();
 
     await loadPlayerTable();
-
+*/
 }
 
 // ----------------------------
