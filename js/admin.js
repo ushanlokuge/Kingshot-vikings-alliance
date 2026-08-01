@@ -5,7 +5,9 @@ import { renderGenerate } from "./pages/generate.js";
 
 import {
     getPlayers,
-    addPlayer
+    addPlayer,
+    editPlayer,
+    deletePlayer
 } from "./services/playerService.js";
 
 import {
@@ -52,7 +54,38 @@ async function loadPlayerTable() {
         document
             .getElementById("addPlayerBtn")
             .addEventListener("click", showPlayerModal);
+        document.querySelectorAll(".editPlayer").forEach(button => {
 
+            button.addEventListener("click", async () => {
+        
+                const players = await getPlayers();
+        
+                const player =
+                    players.find(p => p.id === button.dataset.id);
+        
+                showPlayerModal(player);
+        
+            });
+        
+        });
+        
+        document.querySelectorAll(".deletePlayer").forEach(button => {
+        
+            button.addEventListener("click", async () => {
+        
+                const playerName =
+                    button.closest("tr").children[0].textContent;
+        
+                if (!confirm(`Delete "${playerName}"?`))
+                    return;
+        
+                await deletePlayer(button.dataset.id);
+        
+                await loadPlayerTable();
+        
+            });
+        
+        });
     } catch (error) {
 
         console.error(error);
@@ -221,9 +254,47 @@ new Sortable(heroTableBody, {
 
 let playerModal;
 
-function showPlayerModal() {
+function showPlayerModal(player = null) {
+   if (player) {
+
+    document.getElementById("playerId").value = player.id;
+
+    document.getElementById("playerName").value = player.name;
+
+    document.getElementById("playerGroup").value =
+        player.group;
+
+    document.getElementById("playerAccountType").value =
+        player.accountType ?? "Main";
+
+    document.getElementById("playerMarches").value =
+        player.marches;
+
+    document.getElementById("playerNotes").value =
+        player.notes ?? "";
+
+    document.getElementById("playerActive").checked =
+        player.active ?? true;
+
+}
+else {
+
+    document.getElementById("playerId").value = "";
 
     document.getElementById("playerName").value = "";
+
+    document.getElementById("playerGroup").selectedIndex = 0;
+
+    document.getElementById("playerAccountType").value = "Main";
+
+    document.getElementById("playerMarches").value = 5;
+
+    document.getElementById("playerNotes").value = "";
+
+    document.getElementById("playerActive").checked = true;
+
+}
+    /*document.getElementById("playerName").value = "";
     document.getElementById("playerGroup").selectedIndex = 0;
     document.getElementById("playerMarches").value = 5;
 
@@ -234,7 +305,7 @@ function showPlayerModal() {
     }
 
     playerModal.show();
-
+*/
 }
 // ----------------------------
 // Save Player
